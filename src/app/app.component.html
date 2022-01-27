@@ -32,7 +32,7 @@
                     </mat-card>
 
                     <!-- mat card 2 -->
-                    <mat-card *ngIf="ratings" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="ratings.length" class="card-file mat-elevation-z1">
                         <mat-card-subtitle class="d-flex justify-content-between">
                             <span>Total Ratings</span>
                             <span>{{ totalRating?.toFixed(2) + ' %' }}</span>
@@ -47,26 +47,13 @@
                             </div>
                         </mat-card-content>
                     </mat-card>
-                    <mat-card *ngIf="!ratings" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="!ratings.length" class="card-file mat-elevation-z1">
                         <mat-card-content>
                             <h3>No data to compare</h3>
                         </mat-card-content>
                     </mat-card>
 
                     <!-- mat card 3 -->
-                </div>
-                <div class="container">
-                    <mat-card *ngIf="fileContent" class="card-file">
-                        <mat-card-subtitle>raw content</mat-card-subtitle>
-                        <mat-card-content>
-                            <pre>{{ fileContent }}</pre>
-                        </mat-card-content>
-                    </mat-card>
-                    <mat-card *ngIf="!fileContent" class="card-file">
-                        <mat-card-content>
-                            <h3>No Content to Load</h3>
-                        </mat-card-content>
-                    </mat-card>
                 </div>
             </div>
             <div class="col-md-8">
@@ -86,6 +73,12 @@
                                     <span> Download Sample</span>
                                 </button>
                             </div>
+                        </mat-card-content>
+                    </mat-card>
+
+                    <mat-card *ngIf="!fileContent" class="mat-elevation-z2" style="margin-top: 20px">
+                        <mat-card-content>
+                            <h3>Uploaded file content will be displayed here</h3>
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -110,40 +103,56 @@
 
                     <!-- <pre>{{ ELEMENT_DATA | json }}</pre> -->
 
-                    <table matRipple mat-table [dataSource]="ELEMENT_DATA" class="mat-elevation-z2">
+                    <!-- Data Table here -->
+                    <table mat-table [dataSource]="ELEMENT_DATA" class="mat-elevation-z2">
+                        <!-- Category Column -->
                         <ng-container matColumnDef="category">
-                            <th mat-header-cell *matHeaderCellDef>Category</th>
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>Category</th>
                             <td mat-cell *matCellDef="let element">{{ element.category }}</td>
                         </ng-container>
 
+                        <!-- 5 Column -->
                         <ng-container matColumnDef="5">
                             <th mat-header-cell *matHeaderCellDef>5</th>
                             <td mat-cell *matCellDef="let element">{{ element._5 }}</td>
                         </ng-container>
 
+                        <!-- 4 Column -->
                         <ng-container matColumnDef="4">
                             <th mat-header-cell *matHeaderCellDef>4</th>
                             <td mat-cell *matCellDef="let element">{{ element._4 }}</td>
                         </ng-container>
 
+                        <!-- 3 Column -->
                         <ng-container matColumnDef="3">
                             <th mat-header-cell *matHeaderCellDef>3</th>
                             <td mat-cell *matCellDef="let element">{{ element._3 }}</td>
                         </ng-container>
 
+                        <!-- 2 Column -->
                         <ng-container matColumnDef="2">
                             <th mat-header-cell *matHeaderCellDef>2</th>
                             <td mat-cell *matCellDef="let element">{{ element._2 }}</td>
                         </ng-container>
 
+                        <!-- 1 Column -->
                         <ng-container matColumnDef="1">
-                            <th mat-header-cell *matHeaderCellDef>1</th>
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>1</th>
                             <td mat-cell *matCellDef="let element">{{ element._1 }}</td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ELEMENT_COLUMNS"></tr>
                         <tr mat-row *matRowDef="let row; columns: ELEMENT_COLUMNS"></tr>
                     </table>
+
+                    <div style="margin-top: 20px">
+                        <mat-card *ngIf="fileContent" class="mat-elevation-z2">
+                            <mat-card-subtitle>Raw content</mat-card-subtitle>
+                            <mat-card-content>
+                                <pre>{{ fileContent }}</pre>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
                 </div>
             </div>
         </div>

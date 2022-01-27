@@ -34,7 +34,7 @@ export class AppComponent {
 
   data$ = new BehaviorSubject<NewRow[]>([]);
 
-  ratings: Ratings[];
+  ratings: Ratings[] = [];
   totalRating: number;
 
   constructor(private readonly snackbar: MatSnackBar) { }
@@ -171,13 +171,13 @@ export class AppComponent {
         rating += (n * +this.ELEMENT_DATA[col][prop]); // index 1 = _5
       }
 
-      const percent = (rating / this.columnContent.length).toFixed(2);
-      or += +percent;
+      // accumulate to get total percent
+      or += rating;
 
-      newRatings.percent = percent;
+      newRatings.percent = rating.toFixed(2);
       this.ratings.push(newRatings);
     }
-
+    console.log(this.ratings);
     this.totalRating = or;
   }
 

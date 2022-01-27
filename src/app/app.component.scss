@@ -35,11 +35,11 @@ table {
     overflow: hidden;
 }
 
-$colors: rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6), rgba(random(255), random(255), random(255), 0.6);
-$repeat: 20;
+$colors: #40c4ff, #1de9b6, #00b0ff, #00bfa5, #00e5ff;
+$repeat: 5;
 @for $i from 1 through $repeat {
-    .rate-item:nth-child(#{length($colors)}n + #{$i}) .bar {
-        background: lighten(nth($colors, random(length($colors))), 20%);
+    .rate-item:nth-child(#{$i}) .bar {
+        background: lighten(nth($colors, $i), 20%);
         height: 100%;
         border-radius: 10px;
     }
