@@ -8,7 +8,7 @@
             <div class="col-md-4">
                 <div class="container">
                     <!-- mat card 1 -->
-                    <mat-card *ngIf="file" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="file" class="card-file have-content mat-elevation-z1" @mySlideIn>
                         <mat-card-subtitle class="d-flex align-items-center" color="primary">
                             <mat-icon>description</mat-icon>
                             <span> {{ file.name }}</span>
@@ -25,29 +25,29 @@
                             </p>
                         </mat-card-content>
                     </mat-card>
-                    <mat-card *ngIf="!file" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="!file" class="card-file empty-content mat-elevation-z1">
                         <mat-card-content>
                             <h3>No CSV file to read</h3>
                         </mat-card-content>
                     </mat-card>
 
                     <!-- mat card 2 -->
-                    <mat-card *ngIf="ratings.length" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="ratings.length" class="card-file have-content mat-elevation-z1" @mySlideIn>
                         <mat-card-subtitle class="d-flex justify-content-between">
                             <span>Total Ratings</span>
                             <span>{{ totalRating?.toFixed(2) + ' %' }}</span>
                         </mat-card-subtitle>
                         <mat-card-content>
-                            <div *ngFor="let item of ratings" class="rate-item d-flex justify-content-between">
+                            <div *ngFor="let item of ratings" class="rate-item d-flex justify-content-between" @mySlideIn>
                                 <div class="rate-category-name">{{ item.name }}</div>
-                                <div class="bar-container">
+                                <div class="bar-container" [matTooltip]="item.percent.replace('.00', '') + ' %'" matTooltipPosition="left">
                                     <div class="bar" [style.width.%]="(+item.percent / totalRating) * 230"></div>
                                 </div>
                                 <div class="rate-category-percent">{{ item.percent }} %</div>
                             </div>
                         </mat-card-content>
                     </mat-card>
-                    <mat-card *ngIf="!ratings.length" class="card-file mat-elevation-z1">
+                    <mat-card *ngIf="!ratings.length" class="card-file empty-content mat-elevation-z1">
                         <mat-card-content>
                             <h3>No data to compare</h3>
                         </mat-card-content>
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div *ngIf="!file" style="margin: 20px">
+                <div class="empty-content" *ngIf="!file" style="margin: 20px">
                     <mat-card>
                         <mat-card-content class="d-flex flex-column justify-content-center align-items-center" style="height: 350px">
                             <h2>Nothing to Display</h2>
@@ -76,7 +76,7 @@
                         </mat-card-content>
                     </mat-card>
 
-                    <mat-card *ngIf="!fileContent" class="mat-elevation-z2" style="margin-top: 20px">
+                    <mat-card *ngIf="!fileContent" class="mat-elevation-z2 empty-content" style="margin-top: 20px">
                         <mat-card-content>
                             <h3>Uploaded file content will be displayed here</h3>
                         </mat-card-content>
@@ -84,7 +84,7 @@
                 </div>
 
                 <!-- Output Table -->
-                <div *ngIf="file" style="margin: 20px">
+                <div *ngIf="file" style="margin: 20px" class="have-content" @mySlideIn>
                     <!-- Download -->
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- Upload -->
@@ -142,11 +142,11 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ELEMENT_COLUMNS"></tr>
-                        <tr mat-row *matRowDef="let row; columns: ELEMENT_COLUMNS"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ELEMENT_COLUMNS" @myFadeIn></tr>
                     </table>
 
                     <div style="margin-top: 20px">
-                        <mat-card *ngIf="fileContent" class="mat-elevation-z2">
+                        <mat-card *ngIf="fileContent" class="mat-elevation-z2" @mySlideIn>
                             <mat-card-subtitle>Raw content</mat-card-subtitle>
                             <mat-card-content>
                                 <pre>{{ fileContent }}</pre>

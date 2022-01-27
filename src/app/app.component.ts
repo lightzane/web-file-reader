@@ -1,25 +1,15 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject } from 'rxjs';
-
-interface NewRow {
-  category: string;
-  _5: number;
-  _4: number;
-  _3: number;
-  _2: number;
-  _1: number;
-}
-
-interface Ratings {
-  name: string;
-  percent: string;
-}
+import { NewRow } from './models/new-row.model';
+import { Ratings } from './models/ratings.model';
+import { myFadeIn, mySlideIn } from './my-animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [myFadeIn, mySlideIn]
 })
 export class AppComponent {
 
@@ -168,7 +158,7 @@ export class AppComponent {
       for (let prop in this.ELEMENT_DATA[col]) {
         if (prop === 'category') continue; // this is category.
         const n = +prop.substring(1, 2); // _5 --> 5
-        rating += (n * +this.ELEMENT_DATA[col][prop]); // index 1 = _5
+        rating += (n * +this.ELEMENT_DATA[col][prop]) / (this.rowContent.length - 1); // index 1 = _5
       }
 
       // accumulate to get total percent
@@ -177,7 +167,7 @@ export class AppComponent {
       newRatings.percent = rating.toFixed(2);
       this.ratings.push(newRatings);
     }
-    console.log(this.ratings);
+
     this.totalRating = or;
   }
 
