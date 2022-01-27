@@ -2,6 +2,8 @@
 
 This is a demo web application on reading an uploaded file using the HTML [FileReader API](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/FileReader)
 
+See demo: https://lightzane.github.io/web-file-reader
+
 **app.component.html**
 
 ```html
