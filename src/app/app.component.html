@@ -1,0 +1,29 @@
+<div style="margin: 5rem">
+    <!-- Button -->
+    <button mat-raised-button color="accent" (click)="fileInput.click()">
+        <mat-icon>file_upload</mat-icon>
+        <span> Upload specific file</span>
+    </button>
+
+    <div style="margin: 20px">
+        <mat-chip-list>
+            <mat-chip [selected]="type === 'csv'">csv</mat-chip>
+            <mat-chip [selected]="type === 'json'">json</mat-chip>
+            <mat-chip [selected]="type === 'text'">text</mat-chip>
+        </mat-chip-list>
+    </div>
+
+    <!-- Input -->
+    <input #fileInput hidden type="file" (change)="onFileSelect($event)" accept=".csv, application/vnd.ms-excel, application/json, text/plain" />
+
+    <!-- Output -->
+    <div *ngIf="file" style="margin: 20px">
+        <p class="file-name-and-size">
+            <b>{{ file.name }}</b>
+            <span>{{ file.type }}</span>
+            <span>{{ file.size | fileSize: 2 }}</span>
+        </p>
+        <hr />
+        <pre>{{ fileContent }}</pre>
+    </div>
+</div>
