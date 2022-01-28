@@ -20,12 +20,13 @@ export class AppComponent {
   columnContent: string[];
 
   ELEMENT_DATA: NewRow[] = [];
-  ELEMENT_COLUMNS = ['category', '5', '4', '3', '2', '1'];
+  ELEMENT_COLUMNS = ['category', '5', '4', '3', '2', '1', 'na'];
 
   data$ = new BehaviorSubject<NewRow[]>([]);
 
   ratings: Ratings[] = [];
-  totalRating: number;
+  totalRating: number = 5;
+  average: number;
 
   constructor(private readonly snackbar: MatSnackBar) { }
 
@@ -40,9 +41,10 @@ export class AppComponent {
     this.fileContent = null;
     this.data$.next([]);
     this.ratings = [];
-    this.totalRating = null;
+    this.totalRating = 5;
     this.rowContent = null;
     this.columnContent = null;
+    this.average = null;
   }
 
   onFileSelect(event: Event): void {
@@ -74,6 +76,7 @@ export class AppComponent {
 
       this.generateTableContent();
       this.computeRatings();
+      this.computeAverage();
 
       // console.log(JSON.stringify(this.ELEMENT_DATA));
 
@@ -99,17 +102,19 @@ export class AppComponent {
         _4: 0,
         _3: 0,
         _2: 0,
-        _1: 0
+        _1: 0,
+        na: 0
       };
 
       for (let i in this.rowContent) {
         const val = this.rowContent[i].split(',')[col];
         if (!val) continue;
-        if (val.match(/5/g)) newRow._5++;
-        else if (val.match(/4/g)) newRow._4++;
-        else if (val.match(/3/g)) newRow._3++;
-        else if (val.match(/2/g)) newRow._2++;
-        else if (val.match(/1/g)) newRow._1++;
+        if (val.match(/^5/g)) newRow._5++;
+        else if (val.match(/^4/g)) newRow._4++;
+        else if (val.match(/^3/g)) newRow._3++;
+        else if (val.match(/^2/g)) newRow._2++;
+        else if (val.match(/^1/g)) newRow._1++;
+        else if (val.match(/^(NA|na)/g)) newRow.na++;
       }
 
       data.push(newRow);
@@ -121,10 +126,11 @@ export class AppComponent {
   }
 
   downloadCsv(): void {
-    let csv = 'Category,5,4,3,2,1,%\r\n';
+    let csv = 'Category,5,4,3,2,1,NA,Total,Rating %\r\n';
     let i = 0;
     for (let row of this.ELEMENT_DATA) {
-      csv += `${row.category},${row._5},${row._4},${row._3},${row._2},${row._1},${this.ratings[i].percent}\r\n`;
+      const total = +row._5 + +row._4 + +row._3 + +row._2 + +row._1;
+      csv += `${row.category},${row._5},${row._4},${row._3},${row._2},${row._1},${row.na},${total},${this.ratings[i].percent}\r\n`;
       i++;
     }
 
@@ -151,45 +157,55 @@ export class AppComponent {
   }
 
   computeRatings(): void {
-    let or = 0;
 
     for (let col in this.columnContent) {
       let rating = 0;
       let newRatings: Ratings = {
-        name: '',
+        category: '',
         percent: ''
       };
-      newRatings.name = this.columnContent[col];
+      newRatings.category = this.columnContent[col];
+
+      let total = 0;
 
       for (let prop in this.ELEMENT_DATA[col]) {
-        if (prop === 'category') continue; // this is category.
+        if (prop === 'category') continue; // this is category.\
+        if (prop === 'na') continue; // do not include NA (Not Applicable)
         const n = +prop.substring(1, 2); // _5 --> 5
-        rating += (n * +this.ELEMENT_DATA[col][prop]) / (this.rowContent.length - 1); // index 1 = _5
+
+        // (5 x val1) + (4 x val2) ... + (1 x val5)
+        rating += (n * +this.ELEMENT_DATA[col][prop]); // index 1 = _5
+
+        // accumulate total 5,4,3,2 and 1 rating
+        total += +this.ELEMENT_DATA[col][prop];
       }
 
-      // accumulate to get total percent
-      or += rating;
-
-      newRatings.percent = rating.toFixed(2);
+      newRatings.percent = (rating / total).toFixed(2);
       this.ratings.push(newRatings);
     }
-
-    this.totalRating = or;
   }
 
   downloadSampleCsv(): void {
     let csv = `A,B,C,D,E\r\n`;
 
     for (let i = 1; i <= 20; i++) {
-      csv += `${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)}\r\n`;
+      csv += `${this.randomNumberFrom(0, 5)},${this.randomNumberFrom(0, 5)},${this.randomNumberFrom(0, 5)},${this.randomNumberFrom(0, 5)},${this.randomNumberFrom(0, 5)}\r\n`;
     }
 
     // Create element <a> tag
     this.downloadData('sample.csv', csv);
   }
 
-  private randomNumberFrom(min: number, max: number) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  private randomNumberFrom(min: number, max: number): string | number { // min and max included 
+    const x = Math.floor(Math.random() * (max - min + 1) + min);
+    if (x <= 0) return 'NA';
+    return x;
+  }
+
+  computeAverage() {
+    // get sum of ratings.percent
+    const sum = this.ratings.reduce((a, b) => { return a + +b.percent; }, 0);
+    this.average = sum / this.ratings.length;
   }
 
 }

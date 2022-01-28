@@ -5,4 +5,5 @@ export interface NewRow {
     _3: number;
     _2: number;
     _1: number;
+    na: number;
 }

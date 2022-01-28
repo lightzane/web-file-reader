@@ -35,17 +35,22 @@
                     <mat-card *ngIf="ratings.length" class="card-file have-content mat-elevation-z1" @mySlideIn>
                         <mat-card-subtitle class="d-flex justify-content-between">
                             <span>Total Ratings</span>
-                            <span>{{ totalRating?.toFixed(2) + ' %' }}</span>
+                            <span>{{ average.toFixed(2) }}</span>
                         </mat-card-subtitle>
                         <mat-card-content>
                             <div *ngFor="let item of ratings" class="rate-item d-flex justify-content-between" @mySlideIn>
-                                <div class="rate-category-name" [matTooltip]="item.name" matTooltipPosition="right">{{ item.name | shouldBeShortened: 20 }}</div>
+                                <div class="rate-category-name" [matTooltip]="item.category" matTooltipPosition="right">{{ item.category | shouldBeShortened: 20 }}</div>
                                 <div class="bar-container" [matTooltip]="item.percent.replace('.00', '') + ' %'" matTooltipPosition="left">
-                                    <div class="bar" [style.width.%]="(+item.percent / totalRating) * 230"></div>
+                                    <div class="bar" [style.width.%]="(+item.percent / totalRating) * 100"></div>
                                 </div>
-                                <div class="rate-category-percent">{{ item.percent }} %</div>
+                                <div class="rate-category-percent">{{ item.percent }}</div>
                             </div>
+                            <hr />
                         </mat-card-content>
+                        <mat-card-footer class="d-flex justify-content-between" style="padding: 15px; padding-top: 0">
+                            <span>Average</span>
+                            <span>{{ average.toFixed(2) }}</span>
+                        </mat-card-footer>
                     </mat-card>
                     <mat-card *ngIf="!ratings.length" class="card-file empty-content mat-elevation-z1">
                         <mat-card-content>
@@ -140,6 +145,12 @@
                         <ng-container matColumnDef="1">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>1</th>
                             <td mat-cell *matCellDef="let element">{{ element._1 }}</td>
+                        </ng-container>
+
+                        <!-- na Column -->
+                        <ng-container matColumnDef="na">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>NA</th>
+                            <td mat-cell *matCellDef="let element">{{ element.na }}</td>
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="ELEMENT_COLUMNS"></tr>
