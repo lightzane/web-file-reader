@@ -41,6 +41,8 @@ export class AppComponent {
     this.data$.next([]);
     this.ratings = [];
     this.totalRating = null;
+    this.rowContent = null;
+    this.columnContent = null;
   }
 
   onFileSelect(event: Event): void {
@@ -119,22 +121,26 @@ export class AppComponent {
   }
 
   downloadCsv(): void {
-    let csv = 'Category,5,4,3,2,1,%\n';
+    let csv = 'Category,5,4,3,2,1,%\r\n';
     let i = 0;
     for (let row of this.ELEMENT_DATA) {
-      csv += `${row.category},${row._5},${row._4},${row._3},${row._2},${row._1},${this.ratings[i].percent}\n`;
+      csv += `${row.category},${row._5},${row._4},${row._3},${row._2},${row._1},${this.ratings[i].percent}\r\n`;
       i++;
     }
 
+    this.downloadData('ratings.csv', csv);
+  }
+
+  private downloadData(filename: string, data: string): void {
     // Create element <a> tag
     const download = document.createElement('a');
     download.style.display = 'none';
     // Set filename when downloading
-    download.setAttribute('download', 'ratings.csv');
+    download.setAttribute('download', filename);
     // Set content
     download.setAttribute(
       'href',
-      'data:text/plain;charset=utf-8,' + encodeURIComponent(csv)
+      'data:text/plain;charset=utf-8,' + encodeURIComponent(data)
     );
     // Append the element to the body
     document.body.appendChild(download);
@@ -174,26 +180,12 @@ export class AppComponent {
   downloadSampleCsv(): void {
     let csv = `A,B,C,D,E\r\n`;
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i <= 20; i++) {
       csv += `${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)},${this.randomNumberFrom(1, 5)}\r\n`;
     }
 
     // Create element <a> tag
-    const download = document.createElement('a');
-    download.style.display = 'none';
-    // Set filename when downloading
-    download.setAttribute('download', 'sample.csv');
-    // Set content
-    download.setAttribute(
-      'href',
-      'data:text/plain;charset=utf-8,' + encodeURIComponent(csv)
-    );
-    // Append the element to the body
-    document.body.appendChild(download);
-    // Simulate click
-    download.click();
-    // Remove the element
-    document.body.removeChild(download);
+    this.downloadData('sample.csv', csv);
   }
 
   private randomNumberFrom(min: number, max: number) { // min and max included 

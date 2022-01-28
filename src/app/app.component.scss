@@ -35,13 +35,33 @@ table {
     overflow: hidden;
 }
 
-$colors: #40c4ff, #1de9b6, #00b0ff, #00bfa5, #00e5ff;
-$repeat: 5;
-@for $i from 1 through $repeat {
-    .rate-item:nth-child(#{$i}) .bar {
-        background: lighten(nth($colors, $i), 20%);
+// $colors: #40c4ff, #1de9b6, #00b0ff, #00bfa5, #00e5ff;
+// $repeat: 5;
+// @for $i from 1 through $repeat {
+//     .rate-item:nth-child(#{$i}) .bar {
+//         background: lighten(nth($colors, $i), 20%);
+//         height: 100%;
+//         border-radius: 10px;
+//     }
+// }
+
+.rate-item {
+    height: 100%;
+    .bar {
         height: 100%;
         border-radius: 10px;
+    }
+}
+
+.rate-item:nth-child(even) {
+    .bar {
+        background: lighten(#00e5ff, 20%);
+    }
+}
+
+.rate-item:nth-child(odd) {
+    .bar {
+        background: lighten(#1de9b6, 20%);
     }
 }
 
@@ -56,4 +76,8 @@ $repeat: 5;
 .mat-card-subtitle {
     color: var(--color-primary);
     font-weight: 500;
+}
+
+.mat-cell.mat-column-category {
+    max-width: 150px;
 }
