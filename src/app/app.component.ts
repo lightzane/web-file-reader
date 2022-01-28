@@ -61,7 +61,8 @@ export class AppComponent {
     fileReader.onload = ((fileLoadedEvent) => {
 
       if (!this.file.name.match(/\.csv$/)) {
-        this.snackbar.open('Please upload CSV file');
+        this.snackbar.open('Please upload CSV file', 'OK');
+        this.resetFileDisplay();
         return;
       }
       this.fileContent = fileLoadedEvent.target.result as string;
@@ -80,7 +81,13 @@ export class AppComponent {
 
       // console.log(JSON.stringify(this.ELEMENT_DATA));
 
-      this.snackbar.open('File uploaded successfully', 'OK');
+      if (!this.rowContent.length) {
+        this.snackbar.open('Please upload a VALID CSV file', 'OK');
+        this.resetFileDisplay();
+        return;
+      }
+
+      this.snackbar.open('File uploaded successfully');
     });
 
   }

@@ -55,13 +55,13 @@ table {
 
 .rate-item:nth-child(even) {
     .bar {
-        background: lighten(#00e5ff, 20%);
+        background: lighten(#00e5ff, 30%);
     }
 }
 
 .rate-item:nth-child(odd) {
     .bar {
-        background: lighten(#1de9b6, 20%);
+        background: lighten(#1de9b6, 30%);
     }
 }
 
