@@ -1,6 +1,6 @@
 <div style="margin: 3rem">
     <!-- Input -->
-    <input #fileInput hidden type="file" (change)="onFileSelect($event)" accept=".csv, application/vnd.ms-excel" />
+    <input #fileInput hidden type="file" (change)="onFileSelect($event, fileInput)" accept=".csv, application/vnd.ms-excel" />
 
     <!-- Output -->
     <div class="container">

@@ -47,7 +47,7 @@ export class AppComponent {
     this.average = null;
   }
 
-  onFileSelect(event: Event): void {
+  onFileSelect(event: Event, fileInput: HTMLInputElement): void {
     this.resetFileDisplay();
 
     const { target } = event;
@@ -87,6 +87,7 @@ export class AppComponent {
         return;
       }
 
+      fileInput.value = ''; // resets the input to allow re-read when uploading same file name
       this.snackbar.open('File uploaded successfully');
     });
 
