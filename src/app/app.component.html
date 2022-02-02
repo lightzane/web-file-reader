@@ -14,7 +14,7 @@
     </div>
 
     <!-- Input -->
-    <input #fileInput hidden type="file" (change)="onFileSelect($event)" accept=".csv, application/vnd.ms-excel, application/json, text/plain" />
+    <input #fileInput hidden type="file" (change)="onFileSelect($event, fileInput)" accept=".csv, application/vnd.ms-excel, application/json, text/plain" />
 
     <!-- Output -->
     <div *ngIf="file" style="margin: 20px">
